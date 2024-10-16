@@ -44,7 +44,7 @@ pipeline {
         stage('Commit and Push Jar to Git') {
             steps {
                 // Use credentials to push the JAR file to Git
-                withCredentials([usernamePassword(credentialsId: 'your-credential-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'rico.yusuf@truslogic.co.id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     sh '''
                         git config --global user.email "rico.yusuf@truslogic.co.id"
                         git config --global user.name "rcoyusuf17"
