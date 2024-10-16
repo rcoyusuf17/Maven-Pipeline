@@ -45,6 +45,7 @@ pipeline {
                 sh '''
                     cd maven-samples/single-module
                     mvn package
+                    pwd
                     mv maven-samples/single-module/target/single-module-project.jar Maven-Pipeline/single-module-project.jar
                 '''
             }
