@@ -53,7 +53,7 @@ pipeline {
             steps {
                 script {
                     // Define the WAR file path within the Maven project directory
-                    def warFile = 'maven-samples/single-module/target/your-app.war'
+                    def warFile = 'maven-samples/single-module/target/single-module-project.jar'
 
                     // Check if the WAR file exists and push to Git if it does
                     if (fileExists(warFile)) {
