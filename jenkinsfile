@@ -46,7 +46,7 @@ pipeline {
                     cd maven-samples/single-module
                     mvn package
                     pwd
-                    mv target/single-module-project.jar ../../../single-module-project.jar
+                    mv target/single-module-project.jar ../../single-module-project.jar
                 '''
             }
         }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 script {
                     // Define the WAR file path within the Maven project directory
-                    def jarFile = 'Maven-Pipeline/single-module-project.jar'
+                    def jarFile = 'single-module-project.jar'
 
                     // Check if the WAR file exists and push to Git if it does
                     if (fileExists(jarFile)) {
