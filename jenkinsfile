@@ -46,12 +46,12 @@ pipeline {
                     cd maven-samples/single-module
                     mvn package
                     pwd
-                    mv maven-samples/single-module/target/single-module-project.jar Maven-Pipeline/single-module-project.jar
+                    mv target/single-module-project.jar ../../../single-module-project.jar
                 '''
             }
         }
 
-        stage('Commit and Push WAR to Git') {
+        stage('Commit and Push Jar to Git') {
             steps {
                 script {
                     // Define the WAR file path within the Maven project directory
