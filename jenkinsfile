@@ -14,7 +14,7 @@ pipeline {
                 // Use 'cd' to navigate to the Maven project directory and run Maven version
                 sh '''
                     cd maven-samples/single-module
-                    mvn --batch-mode versions:set
+                    mvn --version
                 '''
             }
         }
