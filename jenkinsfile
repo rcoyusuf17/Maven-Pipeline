@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository from Git
+                git branch: 'main', url: 'https://github.com/rcoyusuf17/Maven-Pipeline.git'
+            }
+        }
+        
+        stage('Maven Version') {
+            steps {
+                // Run Maven version
+                sh 'mvn --batch-mode versions:set'
+            }
+        }
+
+        stage('Maven Validate') {
+            steps {
+                // Run Maven validate
+                sh 'mvn validate'
+            }
+        }
+
+        stage('Maven Test') {
+            steps {
+                // Run Maven tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                // Build and package the application (WAR file will be generated here)
+                sh 'mvn package'
+            }
+        }
+
+        stage('Commit and Push WAR to Git') {
+            steps {
+                script {
+                    // Define the generated WAR file path (in this example, it's under 'target' directory)
+                    def warFile = 'target/your-app.war'
+
+                    // Check if WAR file exists
+                    if (fileExists(warFile)) {
+                        // Add the WAR file to Git, commit, and push to the remote repository
+                        sh """
+                        git add ${warFile}
+                        git commit -m "Add WAR file"
+                        git push origin main
+                        """
+                    } else {
+                        error("WAR file does not exist")
+                    }
+                }
+            }
+        }
+
+        stage('Maven Clean') {
+            steps {
+                // Clean up the build
+                sh 'mvn clean'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean workspace after build
+            cleanWs()
+        }
+    }
+}
+
