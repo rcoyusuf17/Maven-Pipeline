@@ -11,55 +11,45 @@ pipeline {
 
         stage('Maven Version') {
             steps {
-                // Use 'cd' to navigate to the Maven project directory and run Maven version
-                sh '''
-                    cd maven-samples/single-module
-                    mvn --version
-                '''
+                // Run Maven version
+                sh 'mvn --version'
             }
         }
 
         stage('Maven Validate') {
             steps {
-                // Use 'cd' to navigate to the Maven project directory and run Maven validate
-                sh '''
-                    cd maven-samples/single-module
-                    mvn validate
-                '''
+                // Run Maven validate
+                sh 'mvn -f maven-samples/single-module/pom.xml validate'
             }
         }
 
         stage('Maven Test') {
             steps {
-                // Use 'cd' to navigate to the Maven project directory and run Maven tests
-                sh '''
-                    cd maven-samples/single-module
-                    mvn test
-                '''
+                // Run Maven tests
+                sh 'mvn -f maven-samples/single-module/pom.xml test'
             }
         }
 
         stage('Maven Build') {
             steps {
-                // Use 'cd' to navigate to the Maven project directory and run Maven build
+                // Run Maven package
                 sh '''
-                    cd maven-samples/single-module
-                    mvn package
+                    mvn -f maven-samples/single-module/pom.xml package
                     pwd
-                    mv target/single-module-project.jar ../../single-module-project.jar
+                    mv maven-samples/single-module/target/single-module-project.jar single-module-project.jar
                 '''
             }
         }
 
         stage('Commit and Push Jar to Git') {
             steps {
-                steps {
-                withCredentials([usernamePassword(credentialsId: 'rico.yusuf@truslogic.co.id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                // Use credentials to push the JAR file to Git
+                withCredentials([usernamePassword(credentialsId: 'your-credential-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     sh '''
                         git config --global user.email "rico.yusuf@truslogic.co.id"
                         git config --global user.name "rcoyusuf17"
                         git add single-module-project.jar
-                        git commit -m "Add JAR file"
+                        git commit -m "Add JAR file" || echo "No changes to commit"
                         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/rcoyusuf17/Maven-Pipeline.git main
                     '''
                 }
@@ -68,11 +58,8 @@ pipeline {
 
         stage('Maven Clean') {
             steps {
-                // Use 'cd' to navigate to the Maven project directory and clean the project
-                sh '''
-                    cd maven-samples/single-module
-                    mvn clean
-                '''
+                // Clean the project
+                sh 'mvn -f maven-samples/single-module/pom.xml clean'
             }
         }
     }
@@ -83,5 +70,4 @@ pipeline {
             cleanWs()
         }
     }
-}
 }
