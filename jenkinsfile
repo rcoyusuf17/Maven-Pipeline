@@ -64,7 +64,7 @@ pipeline {
                         git config --global user.name "rcoyusuf17"
                         git add ${jarFile}
                         git commit -m "Add JAR file"
-                        git push origin main
+                        git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/rcoyusuf17/Maven-Pipeline.git main
                         """
                     } else {
                         error("JAR file does not exist")
