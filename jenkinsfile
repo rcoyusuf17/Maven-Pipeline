@@ -60,6 +60,8 @@ pipeline {
                     // Check if the WAR file exists and push to Git if it does
                     if (fileExists(jarFile)) {
                         sh """
+                        git config --global user.email "rico.yusuf@truslogic.co.id"
+                        git config --global user.name "rcoyusuf17"
                         git add ${jarFile}
                         git commit -m "Add JAR file"
                         git push origin main
