@@ -53,22 +53,15 @@ pipeline {
 
         stage('Commit and Push Jar to Git') {
             steps {
-                script {
-                    // Define the WAR file path within the Maven project directory
-                    def jarFile = 'single-module-project.jar'
-
-                    // Check if the WAR file exists and push to Git if it does
-                    if (fileExists(jarFile)) {
-                        sh """
+                steps {
+                withCredentials([usernamePassword(credentialsId: 'rico.yusuf@truslogic.co.id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    sh '''
                         git config --global user.email "rico.yusuf@truslogic.co.id"
                         git config --global user.name "rcoyusuf17"
-                        git add ${jarFile}
+                        git add single-module-project.jar
                         git commit -m "Add JAR file"
                         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/rcoyusuf17/Maven-Pipeline.git main
-                        """
-                    } else {
-                        error("JAR file does not exist")
-                    }
+                    '''
                 }
             }
         }
